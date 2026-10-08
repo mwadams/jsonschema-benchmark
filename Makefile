@@ -370,6 +370,24 @@ dist/results/corvus-java/%: \
 	| dist/results/corvus-java
 	@$(call docker_run,corvus-java,/workspace/$(word 2,$^) /workspace/$(word 3,$^))
 
+# CORVUS (Go)
+
+implementations/corvus-go/.dockertimestamp: \
+	implementations/corvus-go/memory-wrapper.sh \
+	implementations/corvus-go/go.mod \
+	implementations/corvus-go/go.sum \
+	implementations/corvus-go/main.go \
+	implementations/corvus-go/Dockerfile
+	docker build -t jsonschema-benchmark/corvus-go implementations/corvus-go
+	touch $@
+
+dist/results/corvus-go/%: \
+	implementations/corvus-go/.dockertimestamp \
+	schemas/%/schema-noformat.json \
+	schemas/%/instances.jsonl \
+	| dist/results/corvus-go
+	@$(call docker_run,corvus-go,/workspace/$(word 2,$^) /workspace/$(word 3,$^))
+
 # CORVUS (TypeScript)
 
 implementations/corvus-ts/.dockertimestamp: \
