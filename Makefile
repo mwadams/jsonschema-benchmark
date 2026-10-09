@@ -388,6 +388,38 @@ dist/results/corvus-go/%: \
 	| dist/results/corvus-go
 	@$(call docker_run,corvus-go,/workspace/$(word 2,$^) /workspace/$(word 3,$^))
 
+# CORVUS (Object Pascal)
+
+implementations/corvus-pas/.dockertimestamp: \
+	implementations/corvus-pas/memory-wrapper.sh \
+	implementations/corvus-pas/main.pas \
+	implementations/corvus-pas/Dockerfile
+	docker build -t jsonschema-benchmark/corvus-pas implementations/corvus-pas
+	touch $@
+
+dist/results/corvus-pas/%: \
+	implementations/corvus-pas/.dockertimestamp \
+	schemas/%/schema-noformat.json \
+	schemas/%/instances.jsonl \
+	| dist/results/corvus-pas
+	@$(call docker_run,corvus-pas,/workspace/$(word 2,$^) /workspace/$(word 3,$^))
+
+# CORVUS (R)
+
+implementations/corvus-r/.dockertimestamp: \
+	implementations/corvus-r/memory-wrapper.sh \
+	implementations/corvus-r/main.R \
+	implementations/corvus-r/Dockerfile
+	docker build -t jsonschema-benchmark/corvus-r implementations/corvus-r
+	touch $@
+
+dist/results/corvus-r/%: \
+	implementations/corvus-r/.dockertimestamp \
+	schemas/%/schema-noformat.json \
+	schemas/%/instances.jsonl \
+	| dist/results/corvus-r
+	@$(call docker_run,corvus-r,/workspace/$(word 2,$^) /workspace/$(word 3,$^))
+
 # CORVUS (TypeScript)
 
 implementations/corvus-ts/.dockertimestamp: \
